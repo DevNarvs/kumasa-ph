@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Oswald } from "next/font/google";
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
+import { getSite } from "@/lib/content";
 import "./globals.css";
 
 const oswald = Oswald({
@@ -22,10 +25,20 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const site = getSite();
+
   return (
     <html lang="en">
       <body className={`${oswald.variable} ${inter.variable} antialiased`}>
-        {children}
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-gold focus:px-4 focus:py-2 focus:text-(--color-base)"
+        >
+          Skip to content
+        </a>
+        <Header />
+        <main id="main">{children}</main>
+        <Footer site={site} />
       </body>
     </html>
   );
