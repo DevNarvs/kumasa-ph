@@ -1,0 +1,7 @@
+- name: Officer One
+  role: President
+  bio: Has a photo.
+  photo: /images/one.jpg
+- name: Officer Two
+  role: Secretary
+  bio: No photo here.
