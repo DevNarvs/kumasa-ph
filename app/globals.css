@@ -461,6 +461,9 @@ body {
   .strip--people {
     grid-template-columns: repeat(4, 1fr);
   }
+  .article {
+    padding-top: clamp(140px, 14vw, 220px);
+  }
 
   /* ---------- Tablet ---------- */
   @media (max-width: 1020px) {

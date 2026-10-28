@@ -6,10 +6,10 @@ import Lightbox from '@/components/Lightbox';
 import type { Album } from '@/lib/content';
 
 const filterClass = (active: boolean) =>
-  `border px-4 py-2 font-display text-sm uppercase tracking-wide ${
+  `min-h-12 px-5 text-[18px] font-bold [font-stretch:85%] transition-colors ${
     active
-      ? 'border-gold bg-gold text-(--color-base)'
-      : 'border-white/20 hover:border-gold hover:text-gold'
+      ? 'bg-[var(--ink)] text-[var(--bg)]'
+      : 'bg-[var(--surface)] text-[var(--ink)] hover:bg-[var(--surface-2)]'
   }`;
 
 export default function GalleryGrid({ albums }: { albums: Album[] }) {
@@ -59,7 +59,7 @@ export default function GalleryGrid({ albums }: { albums: Album[] }) {
         )}
 
         {images.length === 0 ? (
-          <p className="border border-dashed border-white/20 p-12 text-center text-muted">
+          <p className="statement">
             No photos yet
           </p>
         ) : (

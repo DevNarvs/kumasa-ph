@@ -11,7 +11,7 @@ type LightboxProps = {
 };
 
 const navButtonClass =
-  'absolute top-1/2 z-10 -translate-y-1/2 rounded-full bg-black/60 p-3 hover:bg-black/80 disabled:opacity-30 disabled:hover:bg-black/60';
+  'absolute top-1/2 z-10 flex h-12 w-12 -translate-y-1/2 items-center justify-center bg-[var(--surface)] hover:bg-[var(--surface-2)] disabled:opacity-30 disabled:hover:bg-[var(--surface)]';
 
 export default function Lightbox({ images, index, onClose, onIndexChange }: LightboxProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -68,10 +68,10 @@ export default function Lightbox({ images, index, onClose, onIndexChange }: Ligh
       aria-modal="true"
       aria-label="Image viewer"
       onClick={closeOnBackdrop}
-      className="fixed inset-0 z-50 flex animate-[lightbox-in_150ms_ease-out] flex-col bg-black/95 motion-reduce:animate-none"
+      className="fixed inset-0 z-50 flex animate-[lightbox-in_150ms_ease-out] flex-col bg-[var(--bg)] motion-reduce:animate-none"
     >
       <div className="flex items-center justify-between p-4">
-        <p aria-live="polite" className="text-sm text-muted">
+        <p aria-live="polite" className="text-[15px] text-[var(--muted)]">
           {index + 1} / {images.length}
         </p>
         <button
@@ -79,7 +79,7 @@ export default function Lightbox({ images, index, onClose, onIndexChange }: Ligh
           type="button"
           aria-label="Close"
           onClick={onClose}
-          className="rounded-full p-2 hover:bg-white/10"
+          className="flex h-12 w-12 items-center justify-center bg-[var(--surface)] hover:bg-[var(--surface-2)]"
         >
           <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
             <path d="M5 5l14 14M19 5L5 19" />
@@ -113,7 +113,7 @@ export default function Lightbox({ images, index, onClose, onIndexChange }: Ligh
         </button>
       </div>
 
-      <p className="p-4 text-center text-sm">{image.alt}</p>
+      <p className="p-4 text-center text-[15px]">{image.alt}</p>
     </div>
   );
 }

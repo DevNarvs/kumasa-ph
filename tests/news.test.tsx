@@ -44,6 +44,32 @@ describe('news pages', () => {
     expect(screen.getByRole('link', { name: /all news/i })).toHaveAttribute('href', '/news');
   });
 
+  test('article title is an h1 at d-2 size, followed by its date', async () => {
+    render(
+      await NewsPostPage({ params: Promise.resolve({ slug: '2026-10-12-team-named-for-the-national-open' }) }),
+    );
+    const h1 = screen.getByRole('heading', { level: 1 });
+    expect(h1).toHaveClass('d-2');
+    const date = screen.getByText('October 12, 2026');
+    expect(h1.compareDocumentPosition(date) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  test('an article with no cover shows a plain frame', async () => {
+    render(
+      await NewsPostPage({ params: Promise.resolve({ slug: '2026-09-03-referee-course-dates-announced' }) }),
+    );
+    const frame = screen.getByRole('img', { name: 'Cover image for Referee course dates announced' });
+    expect(frame.tagName).not.toBe('IMG');
+  });
+
+  test('news index leads with the newest post and closes with the Join field', () => {
+    render(<NewsIndexPage />);
+    expect(screen.getByRole('heading', { level: 1, name: 'News' })).toBeInTheDocument();
+    const lead = screen.getByRole('link', { name: 'Team named for the National Open' }).closest('article');
+    expect(lead).toHaveClass('news-lead');
+    expect(screen.getByRole('region', { name: 'Train with us' })).toBeInTheDocument();
+  });
+
   test('news index lists all posts newest first', () => {
     render(<NewsIndexPage />);
     const titles = screen.getAllByRole('heading', { level: 3 }).map((h) => h.textContent);

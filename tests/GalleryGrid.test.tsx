@@ -71,6 +71,23 @@ describe('GalleryGrid', () => {
     expect(thumbs()).toHaveLength(0);
   });
 
+  test('album filters are flat square buttons; the pressed one is ink-filled', async () => {
+    const user = userEvent.setup();
+    render(<GalleryGrid albums={albums} />);
+    const training = screen.getByRole('button', { name: 'Training' });
+    expect(training.className).not.toMatch(/\bborder\b/);
+    expect(training).toHaveClass('bg-[var(--surface)]');
+    await user.click(training);
+    expect(training).toHaveClass('bg-[var(--ink)]', 'text-[var(--bg)]');
+  });
+
+  test('the lightbox sits on the page ground', async () => {
+    const user = userEvent.setup();
+    render(<GalleryGrid albums={albums} />);
+    await user.click(screen.getByRole('button', { name: 'View larger: Event one' }));
+    expect(screen.getByRole('dialog')).toHaveClass('bg-[var(--bg)]');
+  });
+
   test('with no albums at all the page shows the empty state', () => {
     render(<GalleryGrid albums={[]} />);
     expect(screen.getByText('No photos yet')).toBeInTheDocument();

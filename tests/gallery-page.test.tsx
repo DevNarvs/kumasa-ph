@@ -21,4 +21,9 @@ describe('Gallery page', () => {
       expect(screen.getByRole('button', { name })).toBeInTheDocument();
     }
   });
+
+  test('gallery page closes with the Join field', () => {
+    render(<GalleryPage />);
+    expect(screen.getByRole('region', { name: 'Train with us' })).toBeInTheDocument();
+  });
 });
