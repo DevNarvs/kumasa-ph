@@ -1,18 +1,26 @@
 import type { Metadata } from "next";
-import { Inter, Oswald } from "next/font/google";
+import { Noto_Sans_Tagalog, Red_Hat_Display, Red_Hat_Text } from "next/font/google";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { getSite } from "@/lib/content";
 import "./globals.css";
 
-const oswald = Oswald({
-  variable: "--font-oswald",
+const redHatDisplay = Red_Hat_Display({
+  variable: "--font-red-hat-display",
   subsets: ["latin"],
+  weight: "900",
 });
 
-const inter = Inter({
-  variable: "--font-inter",
+const redHatText = Red_Hat_Text({
+  variable: "--font-red-hat-text",
   subsets: ["latin"],
+  weight: ["400", "500"],
+});
+
+const notoTagalog = Noto_Sans_Tagalog({
+  variable: "--font-noto-tagalog",
+  subsets: ["tagalog"],
+  weight: "400",
 });
 
 export const metadata: Metadata = {
@@ -32,7 +40,7 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${oswald.variable} ${inter.variable} antialiased`}>
+      <body className={`${redHatDisplay.variable} ${redHatText.variable} ${notoTagalog.variable} antialiased`}>
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-gold focus:px-4 focus:py-2 focus:text-(--color-base)"
