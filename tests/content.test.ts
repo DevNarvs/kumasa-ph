@@ -3,6 +3,7 @@ import { describe, expect, test } from 'vitest';
 import {
   getAbout,
   getAlbums,
+  getEvents,
   getNewsPost,
   getNewsPosts,
   getOfficers,
@@ -14,6 +15,9 @@ const root = path.join(__dirname, 'fixtures', 'content');
 const badRoot = path.join(root, 'bad');
 const badWordRoot = path.join(root, 'bad-word');
 const badDetailRoot = path.join(root, 'bad-detail');
+const badFactRoot = path.join(root, 'bad-fact');
+const badEventsMainRoot = path.join(root, 'bad-events-main');
+const badEventsDateRoot = path.join(root, 'bad-events-date');
 
 describe('content layer', () => {
   test('getNewsPosts sorts newest first and breaks date ties by slug', () => {
@@ -82,6 +86,58 @@ describe('content layer', () => {
     ]);
   });
 
+  test('getEvents keeps events on or after today, soonest first', () => {
+    expect(getEvents(root, '2026-10-28').map((e) => e.title)).toEqual(['Open', 'Grading', 'Seminar']);
+  });
+
+  test('getEvents includes an event dated today', () => {
+    expect(getEvents(root, '2026-11-15')[0].title).toBe('Open');
+  });
+
+  test('getEvents defaults main to false and reads main: true', () => {
+    expect(getEvents(root, '2026-10-28').map((e) => e.main)).toEqual([true, false, false]);
+  });
+
+  test('getEvents reads venue, detail and an optional image', () => {
+    const [open, grading] = getEvents(root, '2026-10-28');
+    expect(open).toMatchObject({ date: '2026-11-15', venue: 'Cebu City', detail: 'All divisions', image: '/images/open.jpg' });
+    expect(grading.image).toBeUndefined();
+  });
+
+  test('getEvents returns [] when events.yml is missing', () => {
+    expect(getEvents(badRoot, '2026-10-28')).toEqual([]);
+  });
+
+  test('getEvents rejects two main events, naming events.yml', () => {
+    expect(() => getEvents(badEventsMainRoot, '2026-10-28')).toThrow(/events\.yml.*main/);
+  });
+
+  test('getEvents rejects a non-ISO date, naming events.yml', () => {
+    expect(() => getEvents(badEventsDateRoot, '2026-10-28')).toThrow(/events\.yml.*date/);
+  });
+
+  test('getSite exposes description, heroImage and heroAlt', () => {
+    expect(getSite(root)).toMatchObject({
+      description: 'Fixture description sentence.',
+      heroImage: '/images/hero.jpg',
+      heroAlt: 'Fixture hero',
+    });
+  });
+
+  test('getAbout exposes facts, programmesIntro, and href and image per activity', () => {
+    const about = getAbout(root);
+    expect(about.facts).toEqual(['Since 2015', 'Kuntaw']);
+    expect(about.programmesIntro).toBe('Fixture programmes intro.');
+    expect(about.activities.map((a) => [a.href, a.image])).toEqual([
+      ['/contact', '/images/train.jpg'],
+      ['/#events', '/images/events.jpg'],
+    ]);
+  });
+
+  test('getAbout rejects a fact longer than 32 characters, naming about.md', () => {
+    expect(() => getAbout(badFactRoot)).toThrow(/about\.md.*fact/);
+  });
+
   test('malformed content throws an error naming the file', () => {
     expect(() => getOfficers(badRoot)).toThrow(/officers\.yml/);
   });
@@ -97,14 +153,33 @@ describe('placeholder content', () => {
       getAlbums();
       getNewsPosts();
     }).not.toThrow();
+    expect(getEvents(undefined, '2026-10-28')).toHaveLength(4);
     expect(getSite().name).toBe('KUMASA');
     expect(getTimeline()[0].year).toBe(2015);
   });
 
-  test('placeholder about has four activities and a statement of 8 words or fewer', () => {
+  test('placeholder about has four programmes and a statement of 8 words or fewer', () => {
     const about = getAbout();
-    expect(about.activities.map((a) => a.word)).toEqual(['Train', 'Compete', 'Gather', 'Serve']);
+    expect(about.activities.map((a) => a.title)).toEqual([
+      'Training',
+      'Competition',
+      'Gradings and seminars',
+      'Community',
+    ]);
     expect(about.statement.split(/\s+/).length).toBeLessThanOrEqual(8);
+  });
+
+  test('no visible content string contains [Placeholder]', () => {
+    const visible = JSON.stringify([
+      getSite(),
+      getAbout(),
+      getTimeline(),
+      getOfficers(),
+      getAlbums(),
+      getNewsPosts(),
+      getEvents(undefined, '2026-10-28'),
+    ]);
+    expect(visible).not.toContain('[Placeholder]');
   });
 
   test('placeholder content has an empty album, a cover-less post and a photo-less officer', () => {

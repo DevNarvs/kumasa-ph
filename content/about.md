@@ -1,31 +1,44 @@
 ---
 title: About KUMASA
-excerpt: "[Placeholder] KUMASA, the Kuntaw Unified Martial Sports Advocates, brings practitioners together to train, compete and grow Filipino martial art. Replace this with the organization's own introduction."
-statement: "[Placeholder] One home for Kuntaw"
+excerpt: KUMASA brings Kuntaw clubs, coaches and fighters under one badge, so a student in any club trains to the same standard.
+statement: One home for Kuntaw
+facts:
+  - Since 2015
+  - Kuntaw
+  - Clubs across the Philippines
+programmesIntro: From a first class at your local club to a national final, every programme follows the same KUMASA syllabus.
 activities:
-  - title: Training and development
-    description: "[Placeholder] Describe how KUMASA supports practitioners and instructors."
+  - title: Training
+    description: Club classes every week for children, teens and adults, from white belt to black.
     word: Train
-    detail: "[Placeholder] Weekly"
-  - title: Tournaments and events
-    description: "[Placeholder] Describe the competitions, seminars and gatherings KUMASA organizes."
+    detail: Weekly
+    href: /contact
+    image: /images/placeholder/programme-training.svg
+  - title: Competition
+    description: Sparring and forms, from inter-club meets to the National Open.
     word: Compete
-    detail: "[Placeholder] Yearly"
-  - title: Seminars and gatherings
-    description: "[Placeholder] Describe the seminars and member gatherings KUMASA holds."
-    word: Gather
-    detail: "[Placeholder] Monthly"
-  - title: Community and outreach
-    description: "[Placeholder] Describe KUMASA's work with schools, clubs and communities."
+    detail: Yearly
+    href: /#events
+    image: /images/placeholder/programme-competition.svg
+  - title: Gradings and seminars
+    description: Belt gradings and coaching seminars led by senior instructors.
+    word: Grade
+    detail: Through the year
+    href: /#events
+    image: /images/placeholder/programme-grading.svg
+  - title: Community
+    description: Free classes in schools and barangays, run by KUMASA coaches.
     word: Serve
-    detail: "[Placeholder] Year-round"
+    detail: Year-round
+    href: /contact
+    image: /images/placeholder/programme-community.svg
 ---
-[Placeholder] KUMASA is the Kuntaw Unified Martial Sports Advocates, a Filipino martial art organization founded in 2015. Replace this section with the real story of how and why the organization began.
+KUMASA, the Kuntaw Unified Martial Sports Advocates, was founded in 2015 to bring Kuntaw clubs together under one organisation and one badge.
 
 ## Our mission
 
-[Placeholder] State KUMASA's mission here in a few clear sentences.
+To grow Kuntaw as a martial sport in the Philippines: one syllabus for every club, fair competition, and coaches trained to the same standard.
 
 ## What we stand for
 
-[Placeholder] Describe the values that guide the organization and its members.
+Respect on the mat and off it, discipline in training, and a place in the art for every student, whatever their age or background.

@@ -1,0 +1,10 @@
+- date: 2026-11-15
+  title: One
+  venue: A
+  detail: A
+  main: true
+- date: 2026-12-15
+  title: Two
+  venue: B
+  detail: B
+  main: true

@@ -10,6 +10,9 @@ export type SiteInfo = {
   fullName: string;
   tagline: string;
   founded: number;
+  description: string;
+  heroImage: string;
+  heroAlt: string;
   email: string;
   phone: string;
   address: string;
@@ -31,11 +34,28 @@ export type NewsPost = {
   cover?: string;
   html: string;
 };
-export type Activity = { title: string; description: string; word: string; detail: string };
+export type Activity = {
+  title: string;
+  description: string;
+  word: string;
+  detail: string;
+  href: string;
+  image: string;
+};
+export type EventItem = {
+  date: string;
+  title: string;
+  venue: string;
+  detail: string;
+  main: boolean;
+  image?: string;
+};
 export type About = {
   title: string;
   excerpt: string;
   statement: string;
+  facts: string[];
+  programmesIntro: string;
   activities: Activity[];
   html: string;
 };
@@ -101,6 +121,26 @@ function requireShortString(data: Data, key: string, file: string, max: number):
   return value;
 }
 
+function requireStringList(data: Data, key: string, file: string, max: number): string[] {
+  const value = data[key] ?? [];
+  if (!Array.isArray(value) || value.some((item) => typeof item !== 'string' || item === '')) {
+    throw new ContentError(file, `field "${key}" must be a list of strings`);
+  }
+  for (const item of value as string[]) {
+    if (item.length > max) {
+      throw new ContentError(file, `each ${key.replace(/s$/, '')} must be at most ${max} characters`);
+    }
+  }
+  return value as string[];
+}
+
+function optionalBoolean(data: Data, key: string, file: string): boolean {
+  const value = data[key];
+  if (value === undefined || value === null) return false;
+  if (typeof value !== 'boolean') throw new ContentError(file, `field "${key}" must be true or false`);
+  return value;
+}
+
 function requireNumber(data: Data, key: string, file: string): number {
   const value = data[key];
   if (typeof value !== 'number') {
@@ -147,6 +187,9 @@ export function getSite(root: string = defaultRoot()): SiteInfo {
     fullName: requireString(data, 'fullName', file),
     tagline: requireString(data, 'tagline', file),
     founded: requireNumber(data, 'founded', file),
+    description: requireString(data, 'description', file),
+    heroImage: requireString(data, 'heroImage', file),
+    heroAlt: requireString(data, 'heroAlt', file),
     email: requireString(data, 'email', file),
     phone: requireString(data, 'phone', file),
     address: requireString(data, 'address', file),
@@ -164,11 +207,15 @@ export function getAbout(root: string = defaultRoot()): About {
     title: requireString(data, 'title', file),
     excerpt: requireString(data, 'excerpt', file),
     statement: requireString(data, 'statement', file),
+    facts: requireStringList(data, 'facts', file, 32),
+    programmesIntro: requireString(data, 'programmesIntro', file),
     activities: list(data.activities, file, 'activities').map((a) => ({
       title: requireString(a, 'title', file),
       description: requireString(a, 'description', file),
       word: requireShortString(a, 'word', file, 8),
       detail: requireShortString(a, 'detail', file, 24),
+      href: requireString(a, 'href', file),
+      image: requireString(a, 'image', file),
     })),
     html: guard(file, () => toHtml(body)),
   };
@@ -230,4 +277,25 @@ export function getNewsPosts(root: string = defaultRoot()): NewsPost[] {
 
 export function getNewsPost(slug: string, root: string = defaultRoot()): NewsPost | undefined {
   return getNewsPosts(root).find((post) => post.slug === slug);
+}
+
+const todayUtc = () => new Date().toISOString().slice(0, 10);
+
+export function getEvents(root: string = defaultRoot(), today: string = todayUtc()): EventItem[] {
+  const file = 'events.yml';
+  if (!fs.existsSync(path.join(root, file))) return [];
+  const events = requireList(readYaml(root, file), file).map(
+    (e): EventItem => ({
+      date: normalizeDate(e.date, file),
+      title: requireString(e, 'title', file),
+      venue: requireString(e, 'venue', file),
+      detail: requireString(e, 'detail', file),
+      main: optionalBoolean(e, 'main', file),
+      image: optionalString(e, 'image', file),
+    }),
+  );
+  if (events.filter((e) => e.main).length > 1) {
+    throw new ContentError(file, 'at most one event may set "main"');
+  }
+  return events.filter((e) => e.date >= today).sort((a, b) => a.date.localeCompare(b.date));
 }

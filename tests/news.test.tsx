@@ -37,11 +37,11 @@ describe('news pages', () => {
 
   test('slug page renders the post title as h1, its date, its body and a link back', async () => {
     render(
-      await NewsPostPage({ params: Promise.resolve({ slug: '2026-01-05-placeholder-news-one' }) }),
+      await NewsPostPage({ params: Promise.resolve({ slug: '2026-10-12-team-named-for-the-national-open' }) }),
     );
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('News headline one');
-    expect(screen.getByText('January 5, 2026')).toBeInTheDocument();
-    expect(screen.getByText(/Write the full news story here/)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Team named for the National Open');
+    expect(screen.getByText('October 12, 2026')).toBeInTheDocument();
+    expect(screen.getByText(/selection panel has named thirty fighters/)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /all news/i })).toHaveAttribute('href', '/news');
   });
 
@@ -49,9 +49,9 @@ describe('news pages', () => {
     render(<NewsIndexPage />);
     const titles = screen.getAllByRole('heading', { level: 3 }).map((h) => h.textContent);
     expect(titles).toEqual([
-      '[Placeholder] News headline three',
-      '[Placeholder] News headline two',
-      '[Placeholder] News headline one',
+      'Team named for the National Open',
+      'New club opens in Bacolod',
+      'Referee course dates announced',
     ]);
   });
 

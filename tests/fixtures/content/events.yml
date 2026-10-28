@@ -1,0 +1,18 @@
+- date: 2026-01-10
+  title: Past meet
+  venue: Old Hall
+  detail: Sparring
+- date: 2026-12-06
+  title: Grading
+  venue: Quezon City
+  detail: Grading, by invitation
+- date: 2026-11-15
+  title: Open
+  venue: Cebu City
+  detail: All divisions
+  main: true
+  image: /images/open.jpg
+- date: 2027-01-24
+  title: Seminar
+  venue: Davao City
+  detail: Two days

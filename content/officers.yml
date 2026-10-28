@@ -1,16 +1,16 @@
-# Roles are generic placeholders; names and bios are all [Placeholder].
-- name: "[Placeholder] Officer Name"
+# Sample officers: names are to be confirmed by KUMASA.
+- name: Name to be confirmed
   role: President
-  bio: "[Placeholder] Short biography."
+  bio: Leads the organisation and chairs the board of coaches.
   photo: /images/placeholder/officer-1.svg
-- name: "[Placeholder] Officer Name"
+- name: Name to be confirmed
   role: Vice President
-  bio: "[Placeholder] Short biography."
+  bio: Oversees competitions and the national team.
   photo: /images/placeholder/officer-1.svg
-- name: "[Placeholder] Officer Name"
+- name: Name to be confirmed
   role: Secretary
-  bio: "[Placeholder] Short biography."
+  bio: Keeps club records, gradings and membership.
   photo: /images/placeholder/officer-1.svg
-- name: "[Placeholder] Officer Name"
+- name: Name to be confirmed
   role: Treasurer
-  bio: "[Placeholder] Short biography."
+  bio: Manages dues, event budgets and sponsorships.

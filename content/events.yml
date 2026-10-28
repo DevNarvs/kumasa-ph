@@ -1,0 +1,19 @@
+# Sample events: replace with KUMASA's real calendar. Events dated before the build date are hidden.
+- date: 2026-11-15
+  title: National Open
+  venue: Cebu City Sports Center
+  detail: Sparring and forms, all divisions
+  main: true
+  image: /images/placeholder/event-national-open.svg
+- date: 2026-12-06
+  title: Black belt grading
+  venue: Quezon City
+  detail: Grading, by invitation
+- date: 2027-01-24
+  title: Coaches' seminar
+  venue: Davao City
+  detail: Seminar, two days
+- date: 2027-02-21
+  title: Visayas inter-club meet
+  venue: Iloilo City
+  detail: Sparring, juniors and seniors

@@ -1,5 +1,5 @@
 ---
 title: Seminars
-description: "[Placeholder] Photos from seminars. No photos yet."
+description: Photos from coaching seminars and gradings.
 images: []
 ---

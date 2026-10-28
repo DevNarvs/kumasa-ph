@@ -78,6 +78,6 @@ describe('Contact page', () => {
   test('contact page has one h1, the contact details and a way to get in touch', () => {
     render(<ContactPage />);
     expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1);
-    expect(screen.getAllByText('info@kumasa.example').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('info@kumasa.ph').length).toBeGreaterThan(0);
   });
 });
