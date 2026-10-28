@@ -10,7 +10,7 @@ export default function NewsIndexPage() {
   return (
     <>
       <PageHeading title="News" intro="Announcements, results and stories from KUMASA." />
-      <section aria-label="All news" className="wrap pt-16">
+      <section aria-label="All news" className="news-index wrap pt-16">
         <NewsList posts={getNewsPosts()} />
       </section>
       <JoinField site={getSite()} />

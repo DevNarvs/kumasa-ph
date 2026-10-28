@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import ImageSlot from '@/components/ImageSlot';
 import Lightbox from '@/components/Lightbox';
 import type { Album } from '@/lib/content';
@@ -63,7 +63,7 @@ export default function GalleryGrid({ albums }: { albums: Album[] }) {
             No photos yet
           </p>
         ) : (
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
+          <div className="gallery-grid grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
             {images.map((image, i) => (
               <button
                 key={`${i}-${image.src}`}
@@ -73,6 +73,7 @@ export default function GalleryGrid({ albums }: { albums: Album[] }) {
                   triggerRef.current = event.currentTarget;
                   setOpenIndex(i);
                 }}
+                style={{ '--i': i } as CSSProperties}
                 className="group block overflow-hidden"
               >
                 <ImageSlot

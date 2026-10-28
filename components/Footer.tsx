@@ -6,13 +6,13 @@ const linkClass = 'no-underline underline-offset-4 hover:underline';
 
 export default function Footer({ site }: { site: SiteInfo }) {
   return (
-    <footer className="wrap grid gap-12 pb-8 pt-[clamp(56px,6vw,96px)]">
+    <footer className="wrap grid gap-12 pb-8 pt-[clamp(96px,9vw,140px)]">
       <p aria-hidden="true" className="d-hero -ml-[0.04em]">
         {site.name}
       </p>
 
       <div className="flex flex-wrap items-end justify-between gap-8">
-        <div className="grid gap-1 text-[15px] text-[var(--muted)]">
+        <div className="grid gap-1 text-[18px] text-[var(--muted)]">
           <p>
             {site.fullName}. Filipino martial art, since {site.founded}.
           </p>

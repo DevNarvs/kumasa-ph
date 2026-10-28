@@ -12,13 +12,15 @@ export default function ContactForm({ endpoint, email }: { endpoint?: string; em
 
   if (!endpoint) {
     return (
-      <p className="statement">
-        Email us at{' '}
-        <a href={`mailto:${email}`} className="underline decoration-2 underline-offset-4">
+      <div className="grid w-full max-w-xl justify-items-end gap-4 text-right">
+        <p className="statement">Email us at</p>
+        <a
+          href={`mailto:${email}`}
+          className="d-2 break-all underline decoration-2 underline-offset-4"
+        >
           {email}
         </a>
-        .
-      </p>
+      </div>
     );
   }
 

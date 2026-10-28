@@ -464,6 +464,57 @@ body {
   .article {
     padding-top: clamp(140px, 14vw, 220px);
   }
+  .article-title {
+    font-size: clamp(40px, 5vw, 80px);
+  }
+  .join-side {
+    display: grid;
+    justify-items: end;
+  }
+
+  /* Inner pages rise into place on load, part by part. */
+  .page-heading > *,
+  .article > *,
+  .join--page .join-text > *,
+  .join--page .join-side,
+  .gallery-grid > * {
+    animation: rise 0.8s var(--ease) both;
+  }
+  .page-heading > :nth-child(2),
+  .article > :nth-child(2),
+  .join--page .join-text > :nth-child(2) {
+    animation-delay: 80ms;
+  }
+  .article > :nth-child(3),
+  .join--page .join-text > :nth-child(3) {
+    animation-delay: 160ms;
+  }
+  .article > :nth-child(4),
+  .join--page .join-text > :nth-child(4),
+  .join--page .join-side {
+    animation-delay: 240ms;
+  }
+  .article > :nth-child(n + 5) {
+    animation-delay: 320ms;
+  }
+  .gallery-grid > * {
+    animation-delay: calc(200ms + var(--i, 0) * 60ms);
+  }
+  .news-index .news-lead > *,
+  .news-index .news-rows > li,
+  .join--page .join-text > :nth-child(4) > *,
+  .join--page .join-side > * > * {
+    animation: rise 0.8s var(--ease) both;
+    animation-delay: 240ms;
+  }
+  .news-index .news-lead > :nth-child(2),
+  .news-index .news-rows > li:nth-child(1),
+  .join--page .join-side > * > :nth-child(2) {
+    animation-delay: 320ms;
+  }
+  .news-index .news-rows > li:nth-child(n + 2) {
+    animation-delay: 400ms;
+  }
 
   /* ---------- Tablet ---------- */
   @media (max-width: 1020px) {

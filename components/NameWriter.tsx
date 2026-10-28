@@ -11,7 +11,7 @@ export default function NameWriter({ id = 'baybayin-name' }: { id?: string }) {
   const name = value.trim() || DEFAULT_NAME;
 
   return (
-    <div className="grid justify-items-center gap-5">
+    <div className="grid w-full max-w-[440px] justify-items-center gap-5">
       <div
         aria-live="polite"
         className="grid aspect-square w-full max-w-[440px] place-items-center content-center gap-3.5 rounded-full bg-[var(--bg)] p-[12%] text-center text-[var(--ink)]"

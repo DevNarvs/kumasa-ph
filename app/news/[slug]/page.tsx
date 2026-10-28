@@ -27,15 +27,17 @@ export default async function NewsPostPage({ params }: Props) {
   return (
     <>
       <article className="article wrap">
-        <Link href="/news" className="text-[18px] font-bold [font-stretch:85%] no-underline hover:underline">
-          <span aria-hidden="true">← </span>All news
-        </Link>
-        <h1 className="d-2 mt-10 max-w-[24ch]">{post.title}</h1>
+        <h1 className="article-title d-2 max-w-[24ch]">{post.title}</h1>
         <time dateTime={post.date} className="mt-4 block text-[15px] text-[var(--muted)]">
           {formatDate(post.date)}
         </time>
         <ImageSlot src={post.cover} alt={`Cover image for ${post.title}`} shape="video" className="mt-10" />
         <div className="post-body mt-10 max-w-[68ch]" dangerouslySetInnerHTML={{ __html: post.html }} />
+        <p className="mt-12">
+          <Link href="/news" className="text-[18px] font-bold [font-stretch:85%] no-underline hover:underline">
+            <span aria-hidden="true">← </span>All news
+          </Link>
+        </p>
       </article>
       <JoinField site={getSite()} />
     </>
