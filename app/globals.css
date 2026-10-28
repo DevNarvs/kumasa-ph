@@ -38,3 +38,12 @@ body {
     radial-gradient(40% 50% at 85% 25%, rgb(208 28 31 / 0.3), transparent 70%),
     radial-gradient(50% 45% at 50% 100%, rgb(242 195 0 / 0.22), transparent 70%);
 }
+
+@keyframes lightbox-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

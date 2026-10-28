@@ -16,7 +16,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "KUMASA — Kuntaw Unified Martial Sports Advocates",
+  title: {
+    default: "KUMASA — Kuntaw Unified Martial Sports Advocates",
+    template: "%s | KUMASA",
+  },
   description: "KUMASA is a Filipino martial arts organization, founded in 2015.",
 };
 
