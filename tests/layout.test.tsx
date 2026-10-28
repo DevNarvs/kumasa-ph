@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { describe, expect, test } from 'vitest';
 import Footer from '@/components/Footer';
 import Reveal from '@/components/Reveal';
@@ -30,10 +30,15 @@ describe('SectionHeading', () => {
 });
 
 describe('Footer', () => {
-  test('shows the copyright with the org name and links to every route', () => {
+  test('has the copyright, the BlockMark, every nav link and the contact email', () => {
     render(<Footer site={site} />);
     expect(screen.getByText(new RegExp(`© ${new Date().getFullYear()} KUMASA`))).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Gallery' })).toHaveAttribute('href', '/gallery');
+    expect(screen.getByRole('img', { name: 'KUMASA' })).toBeInTheDocument();
+    const nav = screen.getByRole('navigation', { name: 'Footer' });
+    for (const [name, href] of [['Home', '/'], ['About', '/about'], ['Gallery', '/gallery'], ['News', '/news'], ['Contact', '/contact']]) {
+      expect(within(nav).getByRole('link', { name })).toHaveAttribute('href', href);
+    }
+    expect(screen.getByRole('link', { name: 'info@kumasa.example' })).toHaveAttribute('href', 'mailto:info@kumasa.example');
   });
 });
 

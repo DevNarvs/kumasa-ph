@@ -49,4 +49,9 @@ describe('Header', () => {
     await user.tab({ shift: true });
     expect(screen.getByRole('link', { name: 'Contact' })).toHaveFocus();
   });
+
+  test('Header takes its ink from the surrounding Field', () => {
+    render(<Header />);
+    expect(screen.getByRole('banner').className).toContain('text-[var(--ink)]');
+  });
 });

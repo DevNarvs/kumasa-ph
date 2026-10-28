@@ -43,58 +43,55 @@ export default function Header() {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-white/10 bg-base">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 md:px-6">
-        <Link href="/" aria-label="KUMASA home" className="flex items-center gap-3">
-          <Image
-            src="/images/kumasa-logo.webp"
-            alt=""
-            width={40}
-            height={40}
-            unoptimized
-            className="rounded-full"
-          />
-          <span className="font-display text-xl uppercase tracking-wide">KUMASA</span>
-        </Link>
+    <header className="relative flex h-20 items-center justify-between text-[var(--ink)]">
+      <Link href="/" aria-label="KUMASA home" className="relative z-[60] block h-11 w-11">
+        <Image
+          src="/images/kumasa-logo.webp"
+          alt=""
+          width={44}
+          height={44}
+          unoptimized
+          className="rounded-full"
+        />
+      </Link>
 
-        <button
-          ref={buttonRef}
-          type="button"
-          aria-expanded={open}
-          aria-controls="site-nav"
-          aria-label={open ? 'Close menu' : 'Open menu'}
-          onClick={() => setOpen((value) => !value)}
-          className="flex h-10 w-10 items-center justify-center rounded md:hidden"
-        >
-          <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-            {open ? <path d="M5 5l14 14M19 5L5 19" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
-          </svg>
-        </button>
+      <button
+        ref={buttonRef}
+        type="button"
+        aria-expanded={open}
+        aria-controls="site-nav"
+        aria-label={open ? 'Close menu' : 'Open menu'}
+        onClick={() => setOpen((value) => !value)}
+        className="relative z-[60] flex h-11 w-11 items-center justify-center md:hidden"
+      >
+        <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+          {open ? <path d="M5 5l14 14M19 5L5 19" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
+        </svg>
+      </button>
 
-        <nav
-          id="site-nav"
-          ref={navRef}
-          aria-label="Main"
-          className={`fixed bottom-0 right-0 top-16 z-30 w-3/4 max-w-xs border-l border-white/10 bg-surface p-6 transition-transform duration-200 motion-reduce:transition-none md:visible md:static md:w-auto md:max-w-none md:translate-x-0 md:border-0 md:bg-transparent md:p-0 ${
-            open ? 'translate-x-0' : 'invisible translate-x-full'
-          }`}
-        >
-          <ul className="flex flex-col gap-5 md:flex-row md:gap-8">
-            {navLinks.map(({ href, label }) => (
-              <li key={href}>
-                <Link
-                  href={href}
-                  onClick={() => setOpen(false)}
-                  aria-current={pathname === href ? 'page' : undefined}
-                  className="font-display text-lg uppercase tracking-wide hover:text-gold aria-[current=page]:text-gold"
-                >
-                  {label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
+      <nav
+        id="site-nav"
+        ref={navRef}
+        aria-label="Main"
+        className={`fixed inset-0 z-50 flex flex-col justify-center bg-[var(--ground)] px-[var(--margin)] md:visible md:static md:z-auto md:flex-row md:justify-end md:bg-transparent md:p-0 ${
+          open ? 'visible' : 'invisible'
+        }`}
+      >
+        <ul className="flex flex-col gap-5 md:flex-row md:gap-8">
+          {navLinks.map(({ href, label }) => (
+            <li key={href}>
+              <Link
+                href={href}
+                onClick={() => setOpen(false)}
+                aria-current={pathname === href ? 'page' : undefined}
+                className="font-display text-5xl uppercase underline-offset-8 hover:underline aria-[current=page]:underline md:font-body md:text-[1rem] md:font-medium md:normal-case md:underline-offset-4"
+              >
+                {label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </header>
   );
 }
