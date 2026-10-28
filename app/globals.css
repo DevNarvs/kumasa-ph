@@ -431,6 +431,37 @@ body {
     background: var(--surface-2);
   }
 
+  /* ---------- Inner pages ---------- */
+  .page-heading {
+    display: grid;
+    gap: 32px;
+    padding-top: clamp(140px, 14vw, 220px);
+  }
+  .story,
+  .history,
+  .officers {
+    padding-top: var(--gap);
+  }
+  .story {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: 24px;
+    row-gap: 40px;
+  }
+  .story-lead {
+    grid-column: 1 / span 6;
+    display: grid;
+    gap: 32px;
+    align-content: start;
+  }
+  .story-body {
+    grid-column: 8 / -1;
+    max-width: 68ch;
+  }
+  .strip--people {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
   /* ---------- Tablet ---------- */
   @media (max-width: 1020px) {
     .intro-text {
@@ -635,6 +666,12 @@ body {
     .strip > li:nth-child(n + 4) {
       display: none;
     }
+    .strip--people {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .strip--people > li:nth-child(n + 4) {
+      display: list-item;
+    }
     .news-lead,
     .news-rows {
       grid-column: 1 / -1;
@@ -644,7 +681,15 @@ body {
     }
   }
   @media (max-width: 700px) {
-    .strip {
+    .story {
+      grid-template-columns: 1fr;
+    }
+    .story-lead,
+    .story-body {
+      grid-column: 1;
+    }
+    .strip,
+    .strip--people {
       grid-template-columns: 1fr 1fr;
     }
     .strip > li:nth-child(4) {

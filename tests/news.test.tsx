@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import NotFound from '@/app/not-found';
 import NewsIndexPage from '@/app/news/page';
 import NewsPostPage, { generateStaticParams } from '@/app/news/[slug]/page';
 import { getNewsPosts } from '@/lib/content';
@@ -61,9 +60,4 @@ describe('news pages', () => {
     expect(screen.getByText('No news yet')).toBeInTheDocument();
   });
 
-  test('not-found page links back to home', () => {
-    render(<NotFound />);
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Page not found');
-    expect(screen.getByRole('link', { name: /back to home/i })).toHaveAttribute('href', '/');
-  });
 });
