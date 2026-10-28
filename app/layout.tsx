@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Noto_Sans_Tagalog, Red_Hat_Display, Red_Hat_Text } from "next/font/google";
 import Footer from "@/components/Footer";
+import SiteHeader from "@/components/SiteHeader";
 import { getSite } from "@/lib/content";
 import "./globals.css";
 
@@ -46,6 +47,7 @@ export default function RootLayout({
         >
           Skip to content
         </a>
+        <SiteHeader />
         <main id="main">{children}</main>
         <Footer site={site} />
       </body>
