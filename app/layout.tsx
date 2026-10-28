@@ -38,7 +38,7 @@ export default function RootLayout({
       <body className={`${archivo.variable} ${notoTagalog.variable} antialiased`}>
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-[var(--ink)] focus:px-4 focus:py-2 focus:text-[var(--bg)]"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[70] focus:bg-[var(--ink)] focus:px-4 focus:py-2 focus:text-[var(--bg)]"
         >
           Skip to content
         </a>

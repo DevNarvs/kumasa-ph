@@ -284,7 +284,10 @@ const todayUtc = () => new Date().toISOString().slice(0, 10);
 export function getEvents(root: string = defaultRoot(), today: string = todayUtc()): EventItem[] {
   const file = 'events.yml';
   if (!fs.existsSync(path.join(root, file))) return [];
-  const events = requireList(readYaml(root, file), file).map(
+  const raw = readYaml(root, file);
+  // An empty or comment-only file means no events, not a broken one.
+  if (raw === null || raw === undefined) return [];
+  const events = requireList(raw, file).map(
     (e): EventItem => ({
       date: normalizeDate(e.date, file),
       title: requireString(e, 'title', file),

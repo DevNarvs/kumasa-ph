@@ -155,8 +155,8 @@ body {
   }
 
   /* Entrances: groups rise 28px into place once; nothing waits without script. */
-  .reveal,
-  .reveal-stagger > * {
+  [data-pending],
+  [data-entering] {
     transition:
       opacity 0.7s var(--ease),
       transform 0.8s var(--ease);
@@ -202,7 +202,8 @@ body {
   }
   .hero-copy {
     position: relative;
-    padding: 0 var(--m) clamp(28px, 4vw, 56px);
+    /* Top padding keeps the name clear of the site header when the screen is short (a phone held sideways). */
+    padding: 104px var(--m) clamp(28px, 4vw, 56px);
     display: grid;
     grid-template-columns: repeat(12, 1fr);
     column-gap: 24px;
@@ -458,14 +459,14 @@ body {
     grid-column: 8 / -1;
     max-width: 68ch;
   }
-  .strip--people {
+  .strip.strip--people {
     grid-template-columns: repeat(4, 1fr);
   }
   .article {
     padding-top: clamp(140px, 14vw, 220px);
   }
   .article-title {
-    font-size: clamp(40px, 5vw, 80px);
+    font-size: clamp(32px, 5vw, 80px);
   }
   .join-side {
     display: grid;
@@ -720,7 +721,7 @@ body {
     .strip > li:nth-child(n + 4) {
       display: none;
     }
-    .strip--people {
+    .strip.strip--people {
       grid-template-columns: repeat(2, 1fr);
     }
     .strip--people > li:nth-child(n + 4) {
@@ -743,7 +744,7 @@ body {
       grid-column: 1;
     }
     .strip,
-    .strip--people {
+    .strip.strip--people {
       grid-template-columns: 1fr 1fr;
     }
     .strip > li:nth-child(4) {

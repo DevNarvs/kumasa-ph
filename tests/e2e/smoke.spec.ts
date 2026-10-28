@@ -86,8 +86,10 @@ test('the name writer on the home page writes a typed name in Baybayin', async (
 test('the home page lists the coming events', async ({ page }) => {
   await page.goto('/');
   const events = page.getByRole('region', { name: 'Coming up' });
-  // Past events drop off at each build, so check that the list renders rather than a fixed count.
-  await expect(events.getByRole('listitem').first()).toBeVisible();
+  // Past events drop off at each build: the section shows either the list or its empty sentence.
+  await expect(
+    events.getByRole('listitem').first().or(events.getByText('No events announced yet.')),
+  ).toBeVisible();
 });
 
 test('the Events link from another page lands on the events section', async ({ page }) => {
@@ -97,9 +99,9 @@ test('the Events link from another page lands on the events section', async ({ p
   await expect(page.locator('#events')).toBeInViewport();
 });
 
-for (const width of [390, 1440]) {
-  test(`no page title sits under the header at ${width}px`, async ({ page }) => {
-    await page.setViewportSize({ width, height: 900 });
+for (const [width, height] of [[390, 900], [1440, 900], [844, 390]]) {
+  test(`no page title sits under the header at ${width}x${height}`, async ({ page }) => {
+    await page.setViewportSize({ width, height });
     for (const route of routes) {
       await page.goto(route);
       const header = await page.getByRole('banner').first().boundingBox();
@@ -119,4 +121,35 @@ test.describe('with reduced motion', () => {
       .evaluateAll((spans) => spans.map((span) => getComputedStyle(span).opacity));
     expect(opacities).toEqual(['1', '1', '1', '1', '1', '1']);
   });
+});
+
+test('the skip link is not covered by the header when focused', async ({ page }) => {
+  await page.goto('/about');
+  await page.keyboard.press('Tab');
+  const skip = page.getByRole('link', { name: 'Skip to content' });
+  await expect(skip).toBeFocused();
+  const box = (await skip.boundingBox())!;
+  const onTop = await page.evaluate(
+    ([x, y]) => document.elementFromPoint(x, y)?.closest('a')?.textContent,
+    [box.x + box.width - 6, box.y + box.height / 2],
+  );
+  expect(onTop).toBe('Skip to content');
+});
+
+test('a long article title stays within two lines on a phone', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/news/2026-10-12-team-named-for-the-national-open');
+  const lines = await page.locator('h1').evaluate((h1) => {
+    h1.textContent = 'KUMASA fighters take five golds at the Visayas Open';
+    return Math.round(h1.getBoundingClientRect().height / parseFloat(getComputedStyle(h1).lineHeight));
+  });
+  expect(lines).toBeLessThanOrEqual(2);
+});
+
+test('the officers strip spans the page width on desktop', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/about');
+  const items = page.getByRole('region', { name: 'Our officers' }).getByRole('listitem');
+  const last = (await items.last().boundingBox())!;
+  expect(last.x + last.width).toBeGreaterThan(1440 - 40 - 4);
 });

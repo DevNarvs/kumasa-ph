@@ -11,6 +11,8 @@ type RevealProps = {
 };
 
 const STEP_MS = 80;
+/** Longest entrance (0.8s) plus the stagger; after this the parts go back to their own transitions. */
+const SETTLE_MS = 1200;
 
 /**
  * Lets a group rise into place the first time it enters the screen.
@@ -32,16 +34,29 @@ export default function Reveal({ children, stagger = false, as: Tag = 'div', cla
       part.style.transitionDelay = `${i * STEP_MS}ms`;
     });
 
+    let settle: ReturnType<typeof setTimeout> | undefined;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return;
-        parts.forEach((part) => part.removeAttribute('data-pending'));
+        parts.forEach((part) => {
+          part.removeAttribute('data-pending');
+          part.setAttribute('data-entering', '');
+        });
         observer.disconnect();
+        settle = setTimeout(() => {
+          parts.forEach((part) => {
+            part.removeAttribute('data-entering');
+            part.style.transitionDelay = '';
+          });
+        }, SETTLE_MS);
       },
       { threshold: 0.12 },
     );
     observer.observe(el);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      clearTimeout(settle);
+    };
   }, [stagger]);
 
   return (

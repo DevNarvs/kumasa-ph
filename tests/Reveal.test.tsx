@@ -51,6 +51,18 @@ describe('Reveal stagger', () => {
     expect(screen.getByText('Picture')).not.toHaveAttribute('data-pending');
   });
 
+  test('once released, children drop their delay so later hovers are not held back', () => {
+    vi.useFakeTimers();
+    render(group);
+    act(() => fire?.());
+    act(() => {
+      vi.advanceTimersByTime(1200);
+    });
+    expect(screen.getByText('Picture').style.transitionDelay).toBe('');
+    expect(screen.getByText('Picture')).not.toHaveAttribute('data-entering');
+    vi.useRealTimers();
+  });
+
   test('with reduced motion no child ever waits', () => {
     setReducedMotion(true);
     render(group);

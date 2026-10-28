@@ -104,6 +104,10 @@ describe('content layer', () => {
     expect(grading.image).toBeUndefined();
   });
 
+  test('getEvents returns [] when events.yml holds only a comment', () => {
+    expect(getEvents(path.join(root, 'empty-events'), '2026-10-28')).toEqual([]);
+  });
+
   test('getEvents returns [] when events.yml is missing', () => {
     expect(getEvents(badRoot, '2026-10-28')).toEqual([]);
   });
