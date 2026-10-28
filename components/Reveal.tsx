@@ -1,12 +1,24 @@
 'use client';
 
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, type ElementType, type ReactNode } from 'react';
 
-type RevealState = 'visible' | 'pending' | 'shown';
+type RevealProps = {
+  children: ReactNode;
+  /** Release the direct children one after another instead of the group as one block. */
+  stagger?: boolean;
+  as?: ElementType;
+  className?: string;
+};
 
-export default function Reveal({ children }: { children: ReactNode }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [state, setState] = useState<RevealState>('visible');
+const STEP_MS = 80;
+
+/**
+ * Lets a group rise into place the first time it enters the screen.
+ * Content is visible by default: only groups that start below the fold, with motion allowed
+ * and IntersectionObserver available, are held back.
+ */
+export default function Reveal({ children, stagger = false, as: Tag = 'div', className }: RevealProps) {
+  const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const el = ref.current;
@@ -14,30 +26,27 @@ export default function Reveal({ children }: { children: ReactNode }) {
     if (!el || reduced || typeof IntersectionObserver === 'undefined') return;
     if (el.getBoundingClientRect().top < window.innerHeight) return;
 
-    setState('pending');
+    const parts = stagger ? (Array.from(el.children) as HTMLElement[]) : [el];
+    parts.forEach((part, i) => {
+      part.setAttribute('data-pending', '');
+      part.style.transitionDelay = `${i * STEP_MS}ms`;
+    });
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setState('shown');
-          observer.disconnect();
-        }
+        if (!entry.isIntersecting) return;
+        parts.forEach((part) => part.removeAttribute('data-pending'));
+        observer.disconnect();
       },
-      { threshold: 0.1 },
+      { threshold: 0.12 },
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [stagger]);
 
   return (
-    <div
-      ref={ref}
-      className={
-        state === 'pending'
-          ? 'translate-y-4 opacity-0'
-          : 'translate-y-0 opacity-100 transition duration-700 ease-out'
-      }
-    >
+    <Tag ref={ref} className={`reveal ${stagger ? 'reveal-stagger' : ''} ${className ?? ''}`.trim()}>
       {children}
-    </div>
+    </Tag>
   );
 }

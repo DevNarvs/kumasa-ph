@@ -194,3 +194,15 @@ body {
     transform: scaleX(1);
   }
 }
+
+/* Entrances: groups rise 28px into place once; nothing waits without script. */
+.reveal,
+.reveal-stagger > * {
+  transition:
+    opacity 0.7s var(--ease),
+    transform 0.8s var(--ease);
+}
+[data-pending] {
+  opacity: 0;
+  transform: translateY(28px);
+}
