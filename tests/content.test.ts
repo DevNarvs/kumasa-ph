@@ -6,6 +6,7 @@ import {
   getNewsPost,
   getNewsPosts,
   getOfficers,
+  getSite,
   getTimeline,
 } from '@/lib/content';
 
@@ -64,5 +65,28 @@ describe('content layer', () => {
 
   test('malformed content throws an error naming the file', () => {
     expect(() => getOfficers(badRoot)).toThrow(/officers\.yml/);
+  });
+});
+
+describe('placeholder content', () => {
+  test('placeholder content loads without error', () => {
+    expect(() => {
+      getSite();
+      getAbout();
+      getTimeline();
+      getOfficers();
+      getAlbums();
+      getNewsPosts();
+    }).not.toThrow();
+    expect(getSite().name).toBe('KUMASA');
+    expect(getTimeline()[0].year).toBe(2015);
+  });
+
+  test('placeholder content has an empty album, a cover-less post and a photo-less officer', () => {
+    expect(getAlbums().map((a) => a.images.length).sort()).toEqual([0, 4, 6]);
+    expect(getNewsPosts()).toHaveLength(3);
+    expect(getNewsPosts().filter((p) => !p.cover)).toHaveLength(1);
+    expect(getOfficers()).toHaveLength(4);
+    expect(getOfficers().filter((o) => !o.photo)).toHaveLength(1);
   });
 });

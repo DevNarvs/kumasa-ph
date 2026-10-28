@@ -1,0 +1,16 @@
+# Roles are generic placeholders; names and bios are all [Placeholder].
+- name: "[Placeholder] Officer Name"
+  role: President
+  bio: "[Placeholder] Short biography."
+  photo: /images/placeholder/officer-1.svg
+- name: "[Placeholder] Officer Name"
+  role: Vice President
+  bio: "[Placeholder] Short biography."
+  photo: /images/placeholder/officer-1.svg
+- name: "[Placeholder] Officer Name"
+  role: Secretary
+  bio: "[Placeholder] Short biography."
+  photo: /images/placeholder/officer-1.svg
+- name: "[Placeholder] Officer Name"
+  role: Treasurer
+  bio: "[Placeholder] Short biography."
