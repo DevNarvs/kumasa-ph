@@ -1,11 +1,10 @@
-import Field from '@/components/Field';
 import Header from '@/components/Header';
 
-/** Site-wide navigation bar, used until each page carries the header in its own first field. */
+/** Site-wide navigation bar. */
 export default function SiteHeader() {
   return (
-    <Field tone="black" as="div" tall={false}>
+    <div className="wrap [--ground:var(--bg)]">
       <Header />
-    </Field>
+    </div>
   );
 }

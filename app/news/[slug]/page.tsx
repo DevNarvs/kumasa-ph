@@ -37,7 +37,7 @@ export default async function NewsPostPage({ params }: Props) {
       <ImageSlot
         src={post.cover}
         alt={`Cover image for ${post.title}`}
-        aspect="video"
+        shape="video"
         className="mt-8"
       />
       <div

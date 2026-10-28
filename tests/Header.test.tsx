@@ -50,7 +50,7 @@ describe('Header', () => {
     expect(screen.getByRole('link', { name: 'Contact' })).toHaveFocus();
   });
 
-  test('Header takes its ink from the surrounding Field', () => {
+  test('Header takes its ink from the --ink token', () => {
     render(<Header />);
     expect(screen.getByRole('banner').className).toContain('text-[var(--ink)]');
   });

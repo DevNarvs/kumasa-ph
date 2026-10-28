@@ -1,11 +1,8 @@
 import Link from 'next/link';
-import Hero from '@/components/Hero';
 import ImageSlot from '@/components/ImageSlot';
-import NewsCard from '@/components/NewsCard';
-import OfficerCard from '@/components/OfficerCard';
 import Reveal from '@/components/Reveal';
-import SectionHeading from '@/components/SectionHeading';
 import { getAbout, getAlbums, getNewsPosts, getOfficers, getSite } from '@/lib/content';
+import { formatDate } from '@/lib/format';
 
 const sectionClass = 'mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-24';
 const linkClass =
@@ -22,11 +19,14 @@ export default function Home() {
 
   return (
     <>
-      <Hero site={site} />
+      <div className={sectionClass}>
+        <h1 className="d-hero">{site.name}</h1>
+        <p className="statement">{site.fullName}</p>
+      </div>
 
       <section aria-label="About" className={sectionClass}>
         <Reveal>
-          <SectionHeading eyebrow="Who we are" title={`About ${site.name}`} />
+          <h2 className="d-1 mb-10">About {site.name}</h2>
           <p className="max-w-3xl text-lg text-muted">{about.excerpt}</p>
           <Link href="/about" className={linkClass}>
             Read our story →
@@ -36,7 +36,7 @@ export default function Home() {
 
       <section aria-label="What we do" className={sectionClass}>
         <Reveal>
-          <SectionHeading eyebrow="Our work" title="What we do" />
+          <h2 className="d-1 mb-10">What we do</h2>
           <ul className="grid gap-8 md:grid-cols-3">
             {about.activities.map((activity) => (
               <li key={activity.title} className="border border-white/10 bg-surface p-6">
@@ -55,10 +55,13 @@ export default function Home() {
 
       <section aria-label="Officers" className={sectionClass}>
         <Reveal>
-          <SectionHeading eyebrow="Leadership" title="Our officers" />
+          <h2 className="d-1 mb-10">Our officers</h2>
           <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
             {officers.map((officer, i) => (
-              <OfficerCard key={`${officer.role}-${i}`} officer={officer} />
+              <figure key={`${officer.role}-${i}`}>
+                <ImageSlot src={officer.photo} alt={`Portrait of ${officer.name}`} shape="round" />
+                <figcaption className="mt-3">{officer.name}, {officer.role}</figcaption>
+              </figure>
             ))}
           </div>
         </Reveal>
@@ -66,10 +69,10 @@ export default function Home() {
 
       <section aria-label="Gallery" className={sectionClass}>
         <Reveal>
-          <SectionHeading eyebrow="In action" title="Gallery" />
+          <h2 className="d-1 mb-10">Gallery</h2>
           <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
             {galleryPreview.map((image) => (
-              <ImageSlot key={image.src} src={image.src} alt={image.alt} aspect="square" />
+              <ImageSlot key={image.src} src={image.src} alt={image.alt} shape="square" />
             ))}
           </div>
           <Link href="/gallery" className={linkClass}>
@@ -80,10 +83,17 @@ export default function Home() {
 
       <section aria-label="News" className={sectionClass}>
         <Reveal>
-          <SectionHeading eyebrow="Latest" title="News" />
+          <h2 className="d-1 mb-10">News</h2>
           <div className="grid gap-8 md:grid-cols-3">
             {latestNews.map((post) => (
-              <NewsCard key={post.slug} post={post} />
+              <article key={post.slug}>
+                <time dateTime={post.date} className="block text-[15px] text-[var(--muted)]">
+                  {formatDate(post.date)}
+                </time>
+                <h3 className="mt-2 text-xl font-bold">
+                  <Link href={`/news/${post.slug}`}>{post.title}</Link>
+                </h3>
+              </article>
             ))}
           </div>
           <Link href="/news" className={linkClass}>
@@ -94,7 +104,7 @@ export default function Home() {
 
       <section aria-label="Contact" className={`${sectionClass} text-center`}>
         <Reveal>
-          <SectionHeading title="Get in touch" />
+          <h2 className="d-1 mb-10">Get in touch</h2>
           <p className="mx-auto max-w-xl text-muted">
             Questions about {site.name}? We would love to hear from you.
           </p>

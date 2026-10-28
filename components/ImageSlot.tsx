@@ -1,43 +1,34 @@
 import Image from 'next/image';
 
-const ASPECT = {
-  square: 'aspect-square',
-  video: 'aspect-video',
-  portrait: 'aspect-[3/4]',
+const SHAPE = {
+  video: 'relative aspect-video',
+  square: 'relative aspect-square',
+  round: 'relative aspect-square rounded-full',
+  fill: 'absolute inset-0',
 } as const;
 
 type ImageSlotProps = {
   src?: string;
   alt: string;
-  aspect?: keyof typeof ASPECT;
+  shape?: keyof typeof SHAPE;
   className?: string;
 };
 
-export default function ImageSlot({ src, alt, aspect = 'video', className = '' }: ImageSlotProps) {
-  const shape = `${ASPECT[aspect]} ${className}`.trim();
+export default function ImageSlot({ src, alt, shape = 'video', className = '' }: ImageSlotProps) {
+  const frame = `${SHAPE[shape]} overflow-hidden bg-[var(--surface)] ${className}`.trim();
 
   if (!src) {
-    return (
-      <div
-        role="img"
-        aria-label={alt}
-        className={`${shape} flex items-center justify-center overflow-hidden border border-white/10 bg-surface bg-[repeating-linear-gradient(135deg,transparent_0_14px,rgba(255,255,255,0.03)_14px_28px)]`}
-      >
-        <span aria-hidden="true" className="text-3xl text-gold/60">
-          ★
-        </span>
-      </div>
-    );
+    return <div role="img" aria-label={alt} className={frame} />;
   }
 
   return (
-    <div className={`${shape} relative overflow-hidden bg-surface`}>
+    <div className={frame}>
       <Image
         src={src}
         alt={alt}
         fill
         unoptimized
-        sizes="(min-width: 768px) 33vw, 100vw"
+        sizes="(min-width: 768px) 50vw, 100vw"
         className="object-cover"
       />
     </div>

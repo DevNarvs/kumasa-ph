@@ -1,6 +1,4 @@
 import Link from 'next/link';
-import BlockMark from '@/components/BlockMark';
-import Field from '@/components/Field';
 import { navLinks } from '@/lib/nav';
 import type { SiteInfo } from '@/lib/content';
 
@@ -15,8 +13,10 @@ export default function Footer({ site }: { site: SiteInfo }) {
   ];
 
   return (
-    <Field tone="black" as="footer" tall={false} className="pb-8 pt-24">
-      <BlockMark text={site.name} />
+    <footer className="wrap pb-8 pt-24">
+      <p aria-hidden="true" className="d-hero">
+        {site.name}
+      </p>
 
       <div className="mt-14 grid gap-10 md:grid-cols-12">
         <nav aria-label="Footer" className="grid grid-cols-2 gap-x-6 gap-y-6 md:col-span-8 md:grid-cols-4">
@@ -58,11 +58,11 @@ export default function Footer({ site }: { site: SiteInfo }) {
         </p>
         <a
           href="#main"
-          className="inline-flex min-h-11 items-center bg-[var(--color-yellow)] px-5 text-[1rem] font-medium text-[#0a0a0a] hover:brightness-110"
+          className="inline-flex min-h-11 items-center bg-[var(--surface)] px-5 text-[1rem] font-medium"
         >
           Back to top
         </a>
       </div>
-    </Field>
+    </footer>
   );
 }

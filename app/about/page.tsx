@@ -1,9 +1,19 @@
 import type { Metadata } from 'next';
-import OfficerCard from '@/components/OfficerCard';
+import ImageSlot from '@/components/ImageSlot';
 import PageHeading from '@/components/PageHeading';
-import SectionHeading from '@/components/SectionHeading';
-import TimelineList from '@/components/TimelineList';
-import { getAbout, getOfficers, getTimeline } from '@/lib/content';
+import { getAbout, getOfficers, getTimeline, type Officer as OfficerType } from '@/lib/content';
+
+function Officer({ officer }: { officer: OfficerType }) {
+  return (
+    <figure>
+      <ImageSlot src={officer.photo} alt={`Portrait of ${officer.name}`} shape="round" />
+      <figcaption className="mt-3">
+        <h3 className="font-bold">{officer.name}</h3>
+        <span className="block text-[15px] text-[var(--muted)]">{officer.role}</span>
+      </figcaption>
+    </figure>
+  );
+}
 
 export const metadata: Metadata = { title: 'About' };
 
@@ -24,15 +34,21 @@ export default function AboutPage() {
       </section>
 
       <section aria-label="History" className={sectionClass}>
-        <SectionHeading eyebrow="Since 2015" title="Our history" />
-        <TimelineList entries={getTimeline()} />
+        <h2 className="d-1 mb-10">Our history</h2>
+        <ol>
+          {getTimeline().map((entry) => (
+            <li key={entry.year}>
+              <span className="d-2">{entry.year}</span> {entry.title}: {entry.description}
+            </li>
+          ))}
+        </ol>
       </section>
 
       <section aria-label="Officers" className={sectionClass}>
-        <SectionHeading eyebrow="Leadership" title="Our officers" />
+        <h2 className="d-1 mb-10">Our officers</h2>
         <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
           {getOfficers().map((officer, i) => (
-            <OfficerCard key={`${officer.role}-${i}`} officer={officer} />
+            <Officer key={`${officer.role}-${i}`} officer={officer} />
           ))}
         </div>
       </section>

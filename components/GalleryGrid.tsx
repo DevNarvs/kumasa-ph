@@ -78,7 +78,7 @@ export default function GalleryGrid({ albums }: { albums: Album[] }) {
                 <ImageSlot
                   src={image.src}
                   alt={image.alt}
-                  aspect="square"
+                  shape="square"
                   className="transition-transform duration-300 group-hover:scale-105 motion-reduce:transition-none"
                 />
               </button>

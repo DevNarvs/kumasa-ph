@@ -1,50 +1,134 @@
 @import "tailwindcss";
 
 @theme {
-  --color-base: #0a0a0a;
-  --color-surface: #141414;
-  --color-text: #f5f5f5;
-  --color-muted: #a3a3a3;
+  --color-bg: #0b0b0b;
+  --color-surface: #171717;
+  --color-surface-2: #202020;
+  --color-ink: #f2f2f0;
+  --color-muted: #a8a6a1;
   --color-accent: #d01c1f;
-  --color-gold: #f2c300;
-  --color-blue: #1b3fa0;
-  --color-red: #d01c1f;
+  --color-accent-ink: #ffffff;
   --color-yellow: #f2c300;
-  --color-paper: #f5f5f5;
 }
 
 @theme inline {
-  --font-display: var(--font-red-hat-display);
-  --font-body: var(--font-red-hat-text);
+  --font-display: var(--font-archivo);
+  --font-body: var(--font-archivo);
   --font-baybayin: var(--font-noto-tagalog);
 }
 
+/* Dark cinematic: black ground, light ink, the badge's red as the one accent. */
 :root {
-  --font-display: var(--font-red-hat-display);
-  --font-body: var(--font-red-hat-text);
-  --font-baybayin: var(--font-noto-tagalog);
-  --margin: clamp(20px, 2.8vw, 40px);
   color-scheme: dark;
+  --bg: #0b0b0b;
+  --surface: #171717;
+  --surface-2: #202020;
+  --ink: #f2f2f0;
+  --muted: #a8a6a1;
+  --accent: #d01c1f;
+  --accent-ink: #ffffff;
+  --yellow: #f2c300;
+  --m: clamp(20px, 2.8vw, 40px);
+  --gap: clamp(96px, 12vw, 200px);
+  --ease: cubic-bezier(0.2, 0.7, 0.1, 1);
 }
 
 body {
-  background: var(--color-base);
-  color: var(--color-text);
-  font-family: var(--font-body), system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-archivo), system-ui, sans-serif;
+  font-stretch: 100%;
+  font-size: 18px;
+  line-height: 1.5;
+  overflow-x: hidden;
 }
 
 :focus-visible {
-  outline: 3px solid var(--ink, #f5f5f5);
+  outline: 3px solid var(--ink);
   outline-offset: 3px;
 }
 
-.hero-splatter {
-  background-image:
-    radial-gradient(40% 50% at 15% 20%, rgb(27 63 160 / 0.35), transparent 70%),
-    radial-gradient(40% 50% at 85% 25%, rgb(208 28 31 / 0.3), transparent 70%),
-    radial-gradient(50% 45% at 50% 100%, rgb(242 195 0 / 0.22), transparent 70%);
+/* Type roles: five sizes do the visible work. */
+.d-hero {
+  font-stretch: 62%;
+  font-weight: 850;
+  line-height: 0.8;
+  letter-spacing: -0.02em;
+  font-size: 30.6vw;
+}
+.d-1 {
+  font-size: clamp(52px, 7.6vw, 124px);
+  font-stretch: 62%;
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+.d-2 {
+  font-size: clamp(28px, 3.3vw, 50px);
+  font-stretch: 70%;
+  font-weight: 750;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.statement {
+  font-size: clamp(22px, 2.3vw, 34px);
+  line-height: 1.25;
+}
+.wrap {
+  padding-inline: var(--m);
+}
+@media (max-width: 700px) {
+  .d-hero {
+    font-size: 28.4vw;
+  }
 }
 
+/* Buttons: flat, square; lift on hover, arrow travels. */
+.btn {
+  transition: transform 0.25s var(--ease);
+}
+.btn:hover {
+  transform: translateY(-3px);
+}
+.btn:active {
+  transform: translateY(0) scale(0.98);
+}
+.btn-arrow {
+  display: inline-block;
+  transition: transform 0.25s var(--ease);
+}
+.btn:hover .btn-arrow {
+  transform: translateX(5px);
+}
+
+@keyframes open {
+  from {
+    transform: scale(0.06);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@keyframes drift {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.06);
+  }
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
 @keyframes lightbox-in {
   from {
     opacity: 0;
@@ -54,19 +138,29 @@ body {
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
 .post-body > * + * {
   margin-top: 1rem;
 }
 .post-body h2 {
   margin-top: 2rem;
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  text-transform: uppercase;
-  letter-spacing: 0.025em;
+  font-size: clamp(28px, 3.3vw, 50px);
+  font-stretch: 70%;
+  font-weight: 750;
+  line-height: 1;
 }
 .post-body a {
-  color: var(--color-gold);
+  color: var(--ink);
   text-decoration: underline;
+  text-underline-offset: 4px;
 }
 .post-body ul {
   list-style: disc;

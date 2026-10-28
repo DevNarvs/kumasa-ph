@@ -2,7 +2,6 @@ import { render, screen, within } from '@testing-library/react';
 import { describe, expect, test } from 'vitest';
 import Footer from '@/components/Footer';
 import Reveal from '@/components/Reveal';
-import SectionHeading from '@/components/SectionHeading';
 import type { SiteInfo } from '@/lib/content';
 
 const site: SiteInfo = {
@@ -19,24 +18,11 @@ const site: SiteInfo = {
   socials: [],
 };
 
-describe('SectionHeading', () => {
-  test('renders the title as an h2 with an optional eyebrow', () => {
-    render(<SectionHeading title="Our officers" eyebrow="Leadership" />);
-    expect(screen.getByRole('heading', { level: 2, name: 'Our officers' })).toBeInTheDocument();
-    expect(screen.getByText('Leadership')).toBeInTheDocument();
-  });
-
-  test('omits the eyebrow when not given', () => {
-    render(<SectionHeading title="Our officers" />);
-    expect(screen.queryByText('Leadership')).not.toBeInTheDocument();
-  });
-});
-
 describe('Footer', () => {
-  test('has the copyright, the BlockMark, every nav link and the contact email', () => {
+  test('has the copyright, the name, every nav link and the contact email', () => {
     render(<Footer site={site} />);
     expect(screen.getByText(new RegExp(`© ${new Date().getFullYear()} KUMASA`))).toBeInTheDocument();
-    expect(screen.getByRole('img', { name: 'KUMASA' })).toBeInTheDocument();
+    expect(screen.getByText('KUMASA')).toHaveAttribute('aria-hidden', 'true');
     const nav = screen.getByRole('navigation', { name: 'Footer' });
     for (const [name, href] of [['Home', '/'], ['About', '/about'], ['Gallery', '/gallery'], ['News', '/news'], ['Contact', '/contact']]) {
       expect(within(nav).getByRole('link', { name })).toHaveAttribute('href', href);

@@ -10,16 +10,21 @@ describe('ImageSlot', () => {
     expect(img).toHaveAttribute('src', expect.stringContaining('/images/photo.jpg'));
   });
 
-  test('renders a labelled placeholder when src is missing', () => {
-    render(<ImageSlot alt="Officer portrait" />);
-    const placeholder = screen.getByRole('img', { name: 'Officer portrait' });
-    expect(placeholder.tagName).not.toBe('IMG');
+  test('without src renders a plain labelled frame with no star and no img', () => {
+    const { container } = render(<ImageSlot alt="Officer portrait" />);
+    const frame = screen.getByRole('img', { name: 'Officer portrait' });
+    expect(frame.tagName).not.toBe('IMG');
+    expect(container.querySelector('img')).toBeNull();
+    expect(container).not.toHaveTextContent('★');
+    expect(frame).toHaveClass('bg-[var(--surface)]');
   });
 
-  test('applies aspect class', () => {
-    const { container, rerender } = render(<ImageSlot alt="Portrait slot" aspect="portrait" />);
-    expect(container.firstElementChild).toHaveClass('aspect-[3/4]');
-    rerender(<ImageSlot src="/images/photo.jpg" alt="Square photo" aspect="square" />);
+  test('applies the shape class', () => {
+    const { container, rerender } = render(<ImageSlot alt="Round slot" shape="round" />);
+    expect(container.firstElementChild).toHaveClass('rounded-full', 'aspect-square');
+    rerender(<ImageSlot src="/images/photo.jpg" alt="Square photo" shape="square" />);
     expect(container.firstElementChild).toHaveClass('aspect-square');
+    rerender(<ImageSlot src="/images/photo.jpg" alt="Fill photo" shape="fill" />);
+    expect(container.firstElementChild).toHaveClass('absolute', 'inset-0');
   });
 });
