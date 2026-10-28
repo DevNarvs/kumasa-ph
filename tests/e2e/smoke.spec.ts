@@ -59,7 +59,7 @@ test('mobile menu opens full-screen with its links inside the viewport', async (
   await page.getByRole('button', { name: 'Open menu' }).click();
   const nav = page.getByRole('navigation', { name: 'Main' });
   await expect(nav).toBeVisible();
-  for (const name of ['Home', 'About', 'Gallery', 'News', 'Contact']) {
+  for (const name of ['About', 'Events', 'Gallery', 'News', 'Join a club']) {
     const box = await nav.getByRole('link', { name }).boundingBox();
     expect(box, name).not.toBeNull();
     expect(box!.y).toBeGreaterThan(80);
@@ -71,8 +71,52 @@ test('mobile menu opens full-screen with its links inside the viewport', async (
 
 test('contact page offers an email link when no form endpoint is configured', async ({ page }) => {
   await page.goto('/contact');
-  await expect(page.getByRole('link', { name: 'info@kumasa.example' }).first()).toHaveAttribute(
+  await expect(page.getByRole('link', { name: 'info@kumasa.ph' }).first()).toHaveAttribute(
     'href',
-    'mailto:info@kumasa.example',
+    'mailto:info@kumasa.ph',
   );
+});
+
+test('the name writer on the home page writes a typed name in Baybayin', async ({ page }) => {
+  await page.goto('/');
+  await page.getByLabel('Your name in Baybayin, as on our badge').fill('Ana');
+  await expect(page.locator('[lang="tl-Tglg"]')).toHaveText('ᜀᜈ');
+});
+
+test('the home page lists the coming events', async ({ page }) => {
+  await page.goto('/');
+  const events = page.getByRole('region', { name: 'Coming up' });
+  // Past events drop off at each build, so check that the list renders rather than a fixed count.
+  await expect(events.getByRole('listitem').first()).toBeVisible();
+});
+
+test('the Events link from another page lands on the events section', async ({ page }) => {
+  await page.goto('/about');
+  await page.getByRole('navigation', { name: 'Main' }).getByRole('link', { name: 'Events' }).click();
+  await expect(page).toHaveURL(/\/#events$/);
+  await expect(page.locator('#events')).toBeInViewport();
+});
+
+for (const width of [390, 1440]) {
+  test(`no page title sits under the header at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    for (const route of routes) {
+      await page.goto(route);
+      const header = await page.getByRole('banner').first().boundingBox();
+      const h1 = await page.locator('h1').boundingBox();
+      expect(h1!.y, route).toBeGreaterThanOrEqual(header!.y + header!.height);
+    }
+  });
+}
+
+test.describe('with reduced motion', () => {
+  test.use({ reducedMotion: 'reduce' });
+
+  test('the hero letters are all visible at once', async ({ page }) => {
+    await page.goto('/');
+    const opacities = await page
+      .locator('#hero-title span')
+      .evaluateAll((spans) => spans.map((span) => getComputedStyle(span).opacity));
+    expect(opacities).toEqual(['1', '1', '1', '1', '1', '1']);
+  });
 });

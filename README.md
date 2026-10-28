@@ -4,7 +4,15 @@ Website for **KUMASA — Kuntaw Unified Martial Sports Advocates**, a Filipino m
 
 It is a static site built with Next.js (App Router), TypeScript and Tailwind CSS. All content lives in Markdown and YAML files in `content/`, so updating the site means editing a file, not code.
 
-> **Status:** the pages and features work, and all text and pictures are placeholders. A visual redesign is in progress (see `docs/superpowers/`). Search the project for `[Placeholder]` to find everything that still needs real content.
+> **Status:** every page is built in the dark cinematic design. The text is sample copy and every photo is a dark placeholder frame. See [Before launch](#before-launch) for everything to replace.
+
+## Design
+
+- **Look:** black ground, light type and the badge's red as the one accent.
+- **Hero:** a full-screen photo that opens out of a circle, with KUMASA set huge in Archivo.
+- **Motif:** the round badge is the frame that photos are cut into (events, gallery strip, news, officers).
+- **Join section:** a red field that closes every page. Visitors can type their name there and see it in Baybayin, as on the badge.
+- **References:** the spec is `docs/superpowers/specs/2026-10-28-kumasa-dark-cinematic-design.md`, and the approved mockup is `docs/superpowers/mockups/kumasa-dark.html`.
 
 ## Requirements
 
@@ -29,11 +37,46 @@ Every file below is read at build time. A missing required field stops the build
 
 ### Organisation details — `content/site.md`
 
-Front matter only: `name`, `fullName`, `tagline`, `founded` (a year), `email`, `phone`, `address`, and `socials` (a list of `label` and `url`).
+Front matter only:
+- `name`, `fullName` and `tagline`
+- `founded` (a year)
+- `description`: one sentence, shown under the big name on the home page
+- `heroImage` and `heroAlt`: the full-screen home photo and its description
+- `email`, `phone` and `address`
+- `socials`: a list of `label` and `url`
 
 ### About page — `content/about.md`
 
-Front matter: `title`, `excerpt` (the short introduction), `statement`, and `activities`. Each activity has `title`, `description`, `word` (one word, at most 8 characters) and `detail` (a short fact, at most 24 characters). The Markdown body is the full story.
+Front matter:
+- `title` and `excerpt` (the short introduction)
+- `statement`: the "One home for Kuntaw" heading
+- `facts`: short chips, at most 32 characters each
+- `programmesIntro`: the sentence beside the Programmes heading
+- `activities`: the four programme panels on the home page. Each has:
+  - `title` and `description`
+  - `word` (at most 8 characters) and `detail` (at most 24 characters)
+  - `href`: where the panel links
+  - `image`: the panel photo
+
+The Markdown body is the full story.
+
+### Events — `content/events.yml`
+
+A list of events, each with:
+- `date` (`YYYY-MM-DD`), `title`, `venue` and `detail`
+- an optional `main: true`, for the one headline event (at most one)
+- an optional `image`, the round photo shown on the main event
+
+Events dated before the build date are hidden, so rebuild the site after an event has passed. With no upcoming events, the home page says "No events announced yet."
+
+```yaml
+- date: 2026-11-15
+  title: National Open
+  venue: Cebu City Sports Center
+  detail: Sparring and forms, all divisions
+  main: true
+  image: /images/events/national-open.jpg
+```
 
 ### History — `content/timeline.yml`
 
@@ -60,6 +103,29 @@ images:
 ### News — `content/news/YYYY-MM-DD-<slug>.md`
 
 Front matter: `title`, `date` (`YYYY-MM-DD`), `excerpt` and an optional `cover` image path. The body is the article in Markdown. Posts are listed newest first; the file name (without `.md`) is the post's address, for example `/news/2026-03-15-regional-open`.
+
+## Swapping a dark frame for a real photo
+
+Each photo slot is a path in `content/`, pointing at a placeholder in `public/images/placeholder/`.
+1. Put the real photo in `public/images/`.
+2. Change the path in the content file.
+
+No code changes are needed. Round slots crop to a circle and wide slots crop to fill their panel, so keep the subject near the centre.
+
+## Before launch
+
+Replace this sample content with KUMASA's own:
+- **`content/site.md`:**
+  - email, phone, address and social links;
+  - `heroImage` (the full-screen home photo).
+- **`content/about.md`:**
+  - the excerpt, facts, programme descriptions and the story;
+  - the four programme `image` paths.
+- **`content/events.yml`:** every event is a sample (National Open, Black belt grading, Coaches' seminar, Visayas inter-club meet).
+- **`content/news/`:** all three posts are samples ("Team named for the National Open", "New club opens in Bacolod", "Referee course dates announced").
+- **`content/timeline.yml`:** the 2018 and 2022 milestones are samples.
+- **`content/officers.yml`:** names ("Name to be confirmed"), bios and photos.
+- **`content/albums/`:** every image is a placeholder frame, and the Seminars album is empty.
 
 ## Contact form
 
