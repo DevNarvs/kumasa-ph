@@ -31,10 +31,12 @@ export type NewsPost = {
   cover?: string;
   html: string;
 };
+export type Activity = { title: string; description: string; word: string; detail: string };
 export type About = {
   title: string;
   excerpt: string;
-  activities: { title: string; description: string }[];
+  statement: string;
+  activities: Activity[];
   html: string;
 };
 
@@ -88,6 +90,14 @@ function optionalString(data: Data, key: string, file: string): string | undefin
   const value = data[key];
   if (value === undefined || value === null) return undefined;
   if (typeof value !== 'string') throw new ContentError(file, `field "${key}" must be a string`);
+  return value;
+}
+
+function requireShortString(data: Data, key: string, file: string, max: number): string {
+  const value = requireString(data, key, file);
+  if (value.length > max) {
+    throw new ContentError(file, `field "${key}" must be at most ${max} characters`);
+  }
   return value;
 }
 
@@ -153,9 +163,12 @@ export function getAbout(root: string = defaultRoot()): About {
   return {
     title: requireString(data, 'title', file),
     excerpt: requireString(data, 'excerpt', file),
+    statement: requireString(data, 'statement', file),
     activities: list(data.activities, file, 'activities').map((a) => ({
       title: requireString(a, 'title', file),
       description: requireString(a, 'description', file),
+      word: requireShortString(a, 'word', file, 8),
+      detail: requireShortString(a, 'detail', file, 24),
     })),
     html: guard(file, () => toHtml(body)),
   };

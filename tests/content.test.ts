@@ -12,6 +12,8 @@ import {
 
 const root = path.join(__dirname, 'fixtures', 'content');
 const badRoot = path.join(root, 'bad');
+const badWordRoot = path.join(root, 'bad-word');
+const badDetailRoot = path.join(root, 'bad-detail');
 
 describe('content layer', () => {
   test('getNewsPosts sorts newest first and breaks date ties by slug', () => {
@@ -53,6 +55,23 @@ describe('content layer', () => {
     expect(about.html).toContain('<strong>about</strong>');
   });
 
+  test('getAbout exposes statement, and word and detail for each activity', () => {
+    const about = getAbout(root);
+    expect(about.statement).toBe('Fixture statement of five words');
+    expect(about.activities.map((a) => [a.word, a.detail])).toEqual([
+      ['Train', 'Weekly sessions'],
+      ['Gather', 'Yearly'],
+    ]);
+  });
+
+  test('getAbout rejects an activity word longer than 8 characters, naming about.md', () => {
+    expect(() => getAbout(badWordRoot)).toThrow(/about\.md.*word/);
+  });
+
+  test('getAbout rejects an activity detail longer than 24 characters', () => {
+    expect(() => getAbout(badDetailRoot)).toThrow(/about\.md.*detail/);
+  });
+
   test('getAlbums derives slug from filename and keeps image order', () => {
     const [events] = getAlbums(root);
     expect(events.slug).toBe('events');
@@ -80,6 +99,12 @@ describe('placeholder content', () => {
     }).not.toThrow();
     expect(getSite().name).toBe('KUMASA');
     expect(getTimeline()[0].year).toBe(2015);
+  });
+
+  test('placeholder about has four activities and a statement of 8 words or fewer', () => {
+    const about = getAbout();
+    expect(about.activities.map((a) => a.word)).toEqual(['Train', 'Compete', 'Gather', 'Serve']);
+    expect(about.statement.split(/\s+/).length).toBeLessThanOrEqual(8);
   });
 
   test('placeholder content has an empty album, a cover-less post and a photo-less officer', () => {
