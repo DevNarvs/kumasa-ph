@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
+import Button from '@/components/Button';
 import { navLinks } from '@/lib/nav';
 
 export default function Header() {
@@ -43,16 +44,21 @@ export default function Header() {
   }, [open]);
 
   return (
-    <header className="relative flex h-20 items-center justify-between text-[var(--ink)]">
-      <Link href="/" aria-label="KUMASA home" className="relative z-[60] block h-11 w-11">
+    <header className="relative flex items-center justify-between gap-6 text-[var(--ink)]">
+      <Link
+        href="/"
+        aria-label="KUMASA home"
+        className="relative z-[60] flex items-center gap-3.5 text-[clamp(22px,2.3vw,34px)] font-extrabold [font-stretch:70%] no-underline"
+      >
         <Image
           src="/images/kumasa-logo.webp"
           alt=""
-          width={44}
-          height={44}
+          width={52}
+          height={52}
           unoptimized
-          className="rounded-full"
+          className="h-11 w-11 rounded-full md:h-[52px] md:w-[52px]"
         />
+        KUMASA
       </Link>
 
       <button
@@ -73,23 +79,28 @@ export default function Header() {
         id="site-nav"
         ref={navRef}
         aria-label="Main"
-        className={`fixed inset-0 z-50 flex flex-col justify-center bg-[var(--ground)] px-[var(--margin)] md:visible md:static md:z-auto md:flex-row md:justify-end md:bg-transparent md:p-0 ${
+        className={`fixed inset-0 z-50 flex flex-col justify-center bg-[var(--bg)] px-[var(--m)] md:visible md:static md:z-auto md:flex-row md:items-center md:bg-transparent md:p-0 ${
           open ? 'visible' : 'invisible'
         }`}
       >
-        <ul className="flex flex-col gap-5 md:flex-row md:gap-8">
+        <ul className="flex flex-col gap-5 md:flex-row md:items-center md:gap-[clamp(18px,2.4vw,36px)]">
           {navLinks.map(({ href, label }) => (
             <li key={href}>
               <Link
                 href={href}
                 onClick={() => setOpen(false)}
                 aria-current={pathname === href ? 'page' : undefined}
-                className="font-display text-5xl uppercase underline-offset-8 hover:underline aria-[current=page]:underline md:font-body md:text-[1rem] md:font-medium md:normal-case md:underline-offset-4"
+                className="nav-link d-1 no-underline md:text-[18px] md:font-medium md:[font-stretch:100%] md:leading-normal md:tracking-normal"
               >
                 {label}
               </Link>
             </li>
           ))}
+          <li className="mt-4 md:mt-0" onClick={() => setOpen(false)}>
+            <Button href="/contact" className="md:min-h-[46px] md:px-5">
+              Join a club
+            </Button>
+          </li>
         </ul>
       </nav>
     </header>

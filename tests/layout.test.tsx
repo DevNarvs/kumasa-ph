@@ -19,15 +19,41 @@ const site: SiteInfo = {
 };
 
 describe('Footer', () => {
-  test('has the copyright, the name, every nav link and the contact email', () => {
+  test('returns the name at full width, hidden from screen readers', () => {
     render(<Footer site={site} />);
-    expect(screen.getByText(new RegExp(`© ${new Date().getFullYear()} KUMASA`))).toBeInTheDocument();
-    expect(screen.getByText('KUMASA')).toHaveAttribute('aria-hidden', 'true');
+    const name = screen.getByText('KUMASA', { selector: 'p' });
+    expect(name).toHaveAttribute('aria-hidden', 'true');
+    expect(name).toHaveClass('d-hero');
+  });
+
+  test('has the full-name line, every footer link and Back to top', () => {
+    render(<Footer site={site} />);
+    expect(
+      screen.getByText('Kuntaw Unified Martial Sports Advocates. Filipino martial art, since 2015.'),
+    ).toBeInTheDocument();
     const nav = screen.getByRole('navigation', { name: 'Footer' });
-    for (const [name, href] of [['Home', '/'], ['About', '/about'], ['Gallery', '/gallery'], ['News', '/news'], ['Contact', '/contact']]) {
-      expect(within(nav).getByRole('link', { name })).toHaveAttribute('href', href);
-    }
-    expect(screen.getByRole('link', { name: 'info@kumasa.example' })).toHaveAttribute('href', 'mailto:info@kumasa.example');
+    expect(
+      within(nav)
+        .getAllByRole('link')
+        .map((a) => [a.textContent, a.getAttribute('href')]),
+    ).toEqual([
+      ['About', '/about'],
+      ['Events', '/#events'],
+      ['Gallery', '/gallery'],
+      ['News', '/news'],
+      ['Contact', '/contact'],
+      ['Back to top', '#main'],
+    ]);
+  });
+
+  test('shows the email, phone and address', () => {
+    render(<Footer site={site} />);
+    expect(screen.getByRole('link', { name: 'info@kumasa.example' })).toHaveAttribute(
+      'href',
+      'mailto:info@kumasa.example',
+    );
+    expect(screen.getByText('000')).toBeInTheDocument();
+    expect(screen.getByText('Somewhere, Philippines')).toBeInTheDocument();
   });
 });
 
