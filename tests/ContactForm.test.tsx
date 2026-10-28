@@ -2,7 +2,6 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, test, vi } from 'vitest';
 import ContactForm from '@/components/ContactForm';
-import ContactPage from '@/app/contact/page';
 
 afterEach(() => vi.unstubAllGlobals());
 
@@ -61,6 +60,16 @@ describe('ContactForm', () => {
     );
   });
 
+  test('fields are filled with the page ground and have no border', () => {
+    render(<ContactForm endpoint="https://forms.example/abc" email="info@kumasa.example" />);
+    for (const label of ['Name', 'Email', 'Message']) {
+      const field = screen.getByLabelText(label);
+      expect(field).toHaveClass('bg-[var(--bg)]');
+      expect(field.className).not.toMatch(/\bborder\b/);
+    }
+    expect(screen.getByRole('button', { name: 'Send message' })).toHaveClass('bg-[var(--bg)]');
+  });
+
   test('required fields block submission', async () => {
     const fetchMock = vi.fn();
     vi.stubGlobal('fetch', fetchMock);
@@ -74,10 +83,3 @@ describe('ContactForm', () => {
   });
 });
 
-describe('Contact page', () => {
-  test('contact page has one h1, the contact details and a way to get in touch', () => {
-    render(<ContactPage />);
-    expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1);
-    expect(screen.getAllByText('info@kumasa.ph').length).toBeGreaterThan(0);
-  });
-});

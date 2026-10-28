@@ -97,7 +97,11 @@ export default function Header() {
             </li>
           ))}
           <li className="mt-4 md:mt-0" onClick={() => setOpen(false)}>
-            <Button href="/contact" className="md:min-h-[46px] md:px-5">
+            <Button
+              href="/contact"
+              variant={pathname === '/contact' ? 'ink' : 'accent'}
+              className="md:min-h-[46px] md:px-5"
+            >
               Join a club
             </Button>
           </li>
